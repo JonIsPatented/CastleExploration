@@ -1,6 +1,10 @@
 package com.jonispatented.castle_exploration.rooms;
 
 import com.jonispatented.castle_exploration.items.Item;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,6 +60,23 @@ public class Room {
     }
 
     public static class Builder {
+
+        public static Room buildFromJsonString(String json) throws ParseException {
+            JSONObject roomJson = (JSONObject) new JSONParser().parse(json);
+            Room.Builder builder = new Room.Builder();
+
+            builder.addName((String) roomJson.get("name"));
+            builder.description((String) roomJson.get("description"));
+
+            JSONArray searchableAreas = (JSONArray) roomJson.get("searchable_areas");
+            for (Object searchableArea : searchableAreas)
+                builder.addSearchableArea(
+                        SearchableArea.Builder.buildFromJsonString(
+                                ((JSONObject) searchableArea).toJSONString())
+                );
+
+            return builder.build();
+        }
 
         private final Room room;
 

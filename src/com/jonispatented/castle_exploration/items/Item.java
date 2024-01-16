@@ -1,5 +1,12 @@
 package com.jonispatented.castle_exploration.items;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +36,18 @@ public class Item {
     }
 
     public static class Builder {
+
+        public static Item buildFromJsonString(String json) throws ParseException {
+            JSONObject itemJson = (JSONObject) new JSONParser().parse(json);
+            Item.Builder builder = new Item.Builder();
+
+            builder.description((String) itemJson.get("description"));
+            JSONArray names = (JSONArray) itemJson.get("names");
+            for (Object name : names)
+                builder.addName((String) name);
+
+            return builder.build();
+        }
 
         private Item item;
 

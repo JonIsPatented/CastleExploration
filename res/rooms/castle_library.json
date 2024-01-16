@@ -1,0 +1,23 @@
+{
+  "name": "Library",
+  "description": "The walls of this rooms are carved with recesses, books pushed into the stones of the castle, itself. What untold knowledge is buried in these tomes? How many thousands of hours of uninterrupted reading would it take even to scratch the surface? With the height of this room's walls, only a few of the bookshelves are actually within your reach. To the west, an open door extends an invitation to enter.",
+  "searchable_areas": [
+    {
+      "names": [
+        "Bookshelf",
+        "Shelf",
+        "Bookshelves",
+        "Shelves"
+      ],
+      "items": [
+        {
+          "names": [
+            "Textbook",
+            "Book"
+          ],
+          "description": "A book containing alchemical formulae. Its level seems best suited as a teaching aid for university students or independent study."
+        }
+      ]
+    }
+  ]
+}

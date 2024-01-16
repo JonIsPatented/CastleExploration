@@ -1,0 +1,42 @@
+{
+  "name": "Throne Room",
+  "description": "This regal grand hall is supported by granite pillars. At one end of the room sits a massive stone throne, braced with iron pegs and cold steel adornments. The room is almost unbearably cold, and your breath is visible in the air. In one corner stands a suspicious statue, and to the east is a door way leading into the library.",
+  "searchable_areas": [
+    {
+      "names": [
+        "Throne"
+      ],
+      "items": [
+        {
+          "names": [
+            "Scroll",
+            "Parchment",
+            "Paper"
+          ],
+          "description": "This muddy parchment has scribblings of mid-draft legislature."
+        }
+      ]
+    },
+    {
+      "names": [
+        "Statue"
+      ],
+      "items": [
+        {
+          "names": [
+            "Sword",
+            "Blade"
+          ],
+          "description": "This rust-addled blade carries an ominous aura. Who is left to tell of the countless lives this blade must have taken?"
+        },
+        {
+          "names": [
+            "Shield",
+            "Targe"
+          ],
+          "description": "This accursed targe bears a dark weight that pulls on your arm as you wield it. It will surely defend you, but at what cost?"
+        }
+      ]
+    }
+  ]
+}

@@ -5,7 +5,13 @@ import com.jonispatented.castle_exploration.creatures.player.Player;
 import com.jonispatented.castle_exploration.items.Item;
 import com.jonispatented.castle_exploration.rooms.Room;
 import com.jonispatented.castle_exploration.rooms.SearchableArea;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,45 +22,24 @@ public class GameState {
         gameContext.setCommandList(EXPLORATION_COMMANDS);
 
         List<Room> rooms = new ArrayList<>();
-        rooms.add(
-                new Room.Builder()
-                        .addName("Throne Room")
-                        .description("This regal grand hall is supported by granite pillars. " +
-                                "At one end of the room sits a massive stone throne, braced with " +
-                                "iron pegs and cold steel adornments. The room is almost unbearably " +
-                                "cold, and your breath is visible in the air. In one corner stands " +
-                                "a suspicious statue, and to the east is a door way leading into " +
-                                "the library.")
-                        .build()
-        );
-        rooms.add(
-                new Room.Builder()
-                        .addName("Library")
-                        .description("The walls of this rooms are carved with recesses, books pushed into " +
-                                "the stones of the castle, itself. What untold knowledge is buried in these " +
-                                "tomes? How many thousands of hours of uninterrupted reading would it " +
-                                "take even to scratch the surface?")
-                        .addSearchableArea(new SearchableArea.Builder()
-                                .addName("Bookshelf")
-                                .addName("Shelf")
-                                .addName("Bookshelves")
-                                .addName("Shelves")
-                                .addItem(new Item.Builder()
-                                        .addName("Textbook")
-                                        .addName("Book")
-                                        .description("A book containing alchemical formulae. Its level seems best " +
-                                                "suited as a teaching aid for university students or independent " +
-                                                "study.")
-                                        .build()
-                                )
-                                .build()
-                        )
-                        .build()
-        );
+
+        rooms.add(loadRoomFromJsonFile("res/rooms/throne_room.json"));
+        rooms.add(loadRoomFromJsonFile("res/rooms/castle_library.json"));
+
         rooms.get(0).addExit("east", rooms.get(1));
         rooms.get(1).addExit("west", rooms.get(0));
 
         gameContext.getPlayer().setCurrentRoom(rooms.get(1));
+    }
+
+    private static Room loadRoomFromJsonFile(String file) {
+        try {
+            return Room.Builder.buildFromJsonString(((JSONObject) new JSONParser()
+                    .parse(new FileReader(file))).toJSONString());
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+            return new Room.Builder().build();
+        }
     }
 
     public static void saveGame(Engine gameContext) {
@@ -90,6 +75,7 @@ public class GameState {
                         };
                         for (String direction : directions) {
                             Room currentExit = player.getCurrentRoom().getExit(direction);
+                            if (currentExit == null) continue;
                             if (currentExit.isValidName(keyTerms.get(0))) {
                                 toRoom = currentExit;
                                 break;
