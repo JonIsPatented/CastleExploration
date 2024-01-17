@@ -14,6 +14,9 @@
             "Paper"
           ],
           "description": "This muddy parchment has scribblings of mid-draft legislature."
+        },
+        {
+          "base": "health_potion"
         }
       ]
     },
@@ -23,10 +26,7 @@
       ],
       "items": [
         {
-          "names": [
-            "Sword",
-            "Blade"
-          ],
+          "base": "sword",
           "description": "This rust-addled blade carries an ominous aura. Who is left to tell of the countless lives this blade must have taken?"
         },
         {

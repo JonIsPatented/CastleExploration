@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Item {
 
-    private List<String> validNames;
+    private final List<String> validNames;
     private String description;
 
     private Item() {
@@ -37,19 +37,41 @@ public class Item {
 
     public static class Builder {
 
-        public static Item buildFromJsonString(String json) throws ParseException {
-            JSONObject itemJson = (JSONObject) new JSONParser().parse(json);
-            Item.Builder builder = new Item.Builder();
-
-            builder.description((String) itemJson.get("description"));
-            JSONArray names = (JSONArray) itemJson.get("names");
-            for (Object name : names)
-                builder.addName((String) name);
-
-            return builder.build();
+        private static Item.Builder builderFromJsonFile(String fileName) throws ParseException {
+            try {
+                return builderFromJsonString(((JSONObject) new JSONParser()
+                        .parse(new FileReader("res/items/" + fileName + ".json"))).toJSONString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new Item.Builder();
+            }
         }
 
-        private Item item;
+        private static Item.Builder builderFromJsonString(String json) throws ParseException {
+            JSONObject itemJson = (JSONObject) new JSONParser().parse(json);
+            Item.Builder builder;
+
+            if (itemJson.containsKey("base"))
+                builder = builderFromJsonFile((String) itemJson.get("base"));
+            else builder = new Item.Builder();
+
+            if (itemJson.containsKey("description"))
+                builder.description((String) itemJson.get("description"));
+
+            if (itemJson.containsKey("names")) {
+                JSONArray names = (JSONArray) itemJson.get("names");
+                for (Object name : names)
+                    builder.addName((String) name);
+            }
+
+            return builder;
+        }
+
+        public static Item buildFromJsonString(String json) throws ParseException {
+            return builderFromJsonString(json).build();
+        }
+
+        private final Item item;
 
         public Builder() {
             item = new Item();
