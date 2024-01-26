@@ -95,23 +95,34 @@ public class Room {
             JSONObject roomJson = (JSONObject) new JSONParser().parse(json);
             Room.Builder builder = new Room.Builder();
 
-            builder.addName((String) roomJson.get("name"));
-            builder.description((String) roomJson.get("description"));
+            String name = (String) roomJson.get("name");
+            if (name != null)
+                builder.addName(name);
+
+            String description = (String) roomJson.get("description");
+            if (name != null)
+                builder.description(description);
 
             JSONArray searchableAreas = (JSONArray) roomJson.get("searchable_areas");
-            for (Object searchableArea : searchableAreas)
-                builder.addSearchableArea(
-                        SearchableArea.Builder.buildFromJsonString(
-                                ((JSONObject) searchableArea).toJSONString())
-                );
+            if (searchableAreas != null) {
+                for (Object searchableArea : searchableAreas) {
+                    builder.addSearchableArea(
+                            SearchableArea.Builder.buildFromJsonString(
+                                    ((JSONObject) searchableArea).toJSONString()
+                            )
+                    );
+                }
+            }
 
             JSONArray deferredExitsList = (JSONArray) roomJson.get("exits");
-            for (Object deferredExit : deferredExitsList) {
-                JSONObject deferredExitJson = (JSONObject) deferredExit;
-                builder.deferredExits.add(new DeferredExit(
-                        (String) deferredExitJson.get("direction"),
-                        (String) deferredExitJson.get("destination"))
-                );
+            if (deferredExitsList != null) {
+                for (Object deferredExit : deferredExitsList) {
+                    JSONObject deferredExitJson = (JSONObject) deferredExit;
+                    builder.deferredExits.add(new DeferredExit(
+                            (String) deferredExitJson.get("direction"),
+                            (String) deferredExitJson.get("destination"))
+                    );
+                }
             }
 
             return builder;

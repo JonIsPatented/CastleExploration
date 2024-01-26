@@ -30,12 +30,15 @@ public class GameState {
                         Player player = gameContext.getPlayer();
                         Room toRoom = player.getCurrentRoom().getExit(keyTerms.get(0));
                         if (toRoom == null) {
-                            System.out.println("You can't go in that direction.");
+                            gameContext.getGameWindow()
+                                    .writeLineToGameOutput("You can't go in that direction.");
                             return;
                         }
                         player.setCurrentRoom(toRoom);
-                        System.out.println(player.getCurrentRoom().getName().toUpperCase());
-                        System.out.println(player.getCurrentRoom().getDescription());
+                        gameContext.getGameWindow()
+                                .writeLineToGameOutput(player.getCurrentRoom().getName().toUpperCase());
+                        gameContext.getGameWindow()
+                                .writeLineToGameOutput(player.getCurrentRoom().getDescription());
                     }
             ),
             new GameCommand(
@@ -60,21 +63,26 @@ public class GameState {
                         }
 
                         if (toRoom == null) {
-                            System.out.println("You can't go in that direction.");
+                            gameContext.getGameWindow()
+                                    .writeLineToGameOutput("You can't go in that direction.");
                             return;
                         }
                         player.setCurrentRoom(toRoom);
-                        System.out.println(player.getCurrentRoom().getName().toUpperCase());
-                        System.out.println(player.getCurrentRoom().getDescription());
+                        gameContext.getGameWindow()
+                                .writeLineToGameOutput(player.getCurrentRoom().getName().toUpperCase());
+                        gameContext.getGameWindow()
+                                .writeLineToGameOutput(player.getCurrentRoom().getDescription());
                     }
             ),
             new GameCommand(
                     "[look] (around)",
-                    (keyTerms, gameContext) -> System.out.println(gameContext.getPlayer().getCurrentRoom().getDescription())
+                    (keyTerms, gameContext) -> gameContext.getGameWindow()
+                            .writeLineToGameOutput(gameContext.getPlayer().getCurrentRoom().getDescription())
             ),
             new GameCommand(
                     "[look_around] (the) [room]",
-                    (keyTerms, gameContext) -> System.out.println(gameContext.getPlayer().getCurrentRoom().getDescription())
+                    (keyTerms, gameContext) -> gameContext.getGameWindow()
+                            .writeLineToGameOutput(gameContext.getPlayer().getCurrentRoom().getDescription())
             ),
             new GameCommand(
                     "[pick_up,grab,take] (a,the) <item>",
@@ -89,16 +97,18 @@ public class GameState {
                             room.getItems().remove(item);
                             room.getSearchableAreas().forEach(area -> area.getItems().remove(item));
                             player.getInventory().addItem(item);
-                            System.out.println("Picked up the " + item.getName() + '.');
+                            gameContext.getGameWindow().writeLineToGameOutput("Picked up the " + item.getName() + '.');
                             return;
                         }
 
-                        System.out.println("Could not find an item called \"" + itemName + "\" here.");
+                        gameContext.getGameWindow()
+                                .writeLineToGameOutput("Could not find an item called \"" + itemName + "\" here.");
                     }
             ),
             new GameCommand(
                     "[pick_up,grab,take] (a,the) <item> [from,by,off,off_of] (a,the) <location>",
-                    (keyTerms, gameContext) -> System.out.println("GRAB 2 CHOSEN:\n" + keyTerms.get(0) + '\n' + keyTerms.get(1))
+                    (keyTerms, gameContext) -> gameContext.getGameWindow()
+                            .writeLineToGameOutput("GRAB 2 CHOSEN:\n" + keyTerms.get(0) + '\n' + keyTerms.get(1))
             ),
             new GameCommand(
                     "[search,explore] (a,the) <location>",
@@ -115,20 +125,21 @@ public class GameState {
                             return;
                         }
 
-                        System.out.println("Could not find an area called \"" + areaName + "\" here.");
+                        gameContext.getGameWindow()
+                                .writeLineToGameOutput("Could not find an area called \"" + areaName + "\" here.");
                     }
             ),
             new GameCommand(
                     "(show) [inv,inventory]",
                     (keyTerms, gameContext) -> {
-                        System.out.println("Inventory:");
-                        gameContext.getPlayer().getInventory().display();
+                        gameContext.getGameWindow().writeLineToGameOutput("Inventory:");
+                        gameContext.getPlayer().getInventory().display(gameContext.getGameWindow());
                     }
             ),
             new GameCommand(
                     "[quit,stop,exit] (the) [game]",
                     (keyTerms, gameContext) -> {
-                        System.out.println("Goodbye!");
+                        gameContext.getGameWindow().writeLineToGameOutput("Goodbye!");
                         gameContext.stop();
                     }
             )

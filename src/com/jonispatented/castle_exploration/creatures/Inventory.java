@@ -1,5 +1,6 @@
 package com.jonispatented.castle_exploration.creatures;
 
+import com.jonispatented.castle_exploration.engine.GameWindow;
 import com.jonispatented.castle_exploration.items.Item;
 
 import java.util.ArrayList;
@@ -29,12 +30,12 @@ public class Inventory {
         return items.remove(index);
     }
 
-    public void display() {
+    public void display(GameWindow window) {
         if (items.isEmpty()) {
-            System.out.println("Inventory empty");
+            window.writeLineToGameOutput("Inventory empty");
             return;
         }
-        items.forEach(item -> System.out.println(" - " + item.getName() + ":\n" +
+        items.forEach(item -> window.writeLineToGameOutput(" - " + item.getName() + ":\n" +
                 "   - " + item.getDescription()));
     }
 

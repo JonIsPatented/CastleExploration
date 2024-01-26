@@ -10,7 +10,8 @@ public class InputParser {
             if (command.process(input, gameContext))
                 return;
         }
-        System.out.println("Unrecognized command. Type \"Help\" for a list of commands.");
+        gameContext.getGameWindow()
+                .writeLineToGameOutput("Unrecognized command. Type \"Help\" for a list of commands.");
     }
 
 }

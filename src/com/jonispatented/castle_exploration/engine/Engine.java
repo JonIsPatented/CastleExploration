@@ -5,18 +5,17 @@ import com.jonispatented.castle_exploration.command_parsing.InputParser;
 import com.jonispatented.castle_exploration.creatures.player.Player;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class Engine {
-
-    public static final Scanner inputScanner = new Scanner(System.in);
 
     private final Player player;
     private boolean shouldContinue;
     private List<GameCommand> commandList;
+    private GameWindow gameWindow;
 
     public Engine() {
         player = new Player();
+        gameWindow = new GameWindow(this);
     }
 
     public void start() {
@@ -25,8 +24,7 @@ public class Engine {
         GameState.loadGame(this);
 
         shouldContinue = true;
-        while (shouldContinue)
-            InputParser.parseInput(inputScanner.nextLine(), this);
+        while (shouldContinue);
     }
 
     public void stop() {
@@ -43,6 +41,10 @@ public class Engine {
 
     public void setCommandList(List<GameCommand> commandList) {
         this.commandList = commandList;
+    }
+
+    public GameWindow getGameWindow() {
+        return gameWindow;
     }
 
     public static void main(String[] args) {
