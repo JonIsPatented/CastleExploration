@@ -11,6 +11,7 @@ public class GameWindow extends JFrame {
 
     private JTextArea gameTextOutput;
     private JTextField gameTextInput;
+    private JTextField roomNameField;
 
     public GameWindow(Engine gameContext) {
         super("Castle Exploration");
@@ -23,6 +24,14 @@ public class GameWindow extends JFrame {
         add(mainPanel);
 
         Border border = BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.GRAY, Color.DARK_GRAY);
+
+        JPanel roomNamePanel = new JPanel();
+        roomNamePanel.setLayout(new BoxLayout(roomNamePanel, BoxLayout.X_AXIS));
+        roomNamePanel.setBorder(border);
+        roomNameField = new JTextField();
+        roomNameField.setEditable(false);
+        roomNamePanel.add(roomNameField);
+        mainPanel.add(roomNamePanel, BorderLayout.NORTH);
 
         JPanel outputPanel = new JPanel();
         outputPanel.setLayout(new BorderLayout());
@@ -54,6 +63,9 @@ public class GameWindow extends JFrame {
 
     public void writeLineToGameOutput(String message) {
         gameTextOutput.append(message + "\n");
-        System.out.println(message);
+    }
+
+    public void setRoomName(String roomName) {
+        roomNameField.setText(roomName);
     }
 }

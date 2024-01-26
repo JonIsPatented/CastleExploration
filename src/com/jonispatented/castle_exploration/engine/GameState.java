@@ -15,8 +15,10 @@ public class GameState {
 
         List<Room> rooms = Room.Builder.buildRoomsFromJsonFiles();
 
-        gameContext.getPlayer().setCurrentRoom(rooms.stream()
-                .filter(room -> room.isValidName("Library")).findFirst().get());
+        Room startingRoom = rooms.stream()
+                .filter(room -> room.isValidName("Library")).findFirst().get();
+        gameContext.getPlayer().setCurrentRoom(startingRoom);
+        gameContext.getGameWindow().setRoomName(startingRoom.getName().toUpperCase());
     }
 
     public static void saveGame(Engine gameContext) {
@@ -36,7 +38,7 @@ public class GameState {
                         }
                         player.setCurrentRoom(toRoom);
                         gameContext.getGameWindow()
-                                .writeLineToGameOutput(player.getCurrentRoom().getName().toUpperCase());
+                                .setRoomName(player.getCurrentRoom().getName().toUpperCase());
                         gameContext.getGameWindow()
                                 .writeLineToGameOutput(player.getCurrentRoom().getDescription());
                     }
@@ -69,7 +71,7 @@ public class GameState {
                         }
                         player.setCurrentRoom(toRoom);
                         gameContext.getGameWindow()
-                                .writeLineToGameOutput(player.getCurrentRoom().getName().toUpperCase());
+                                .setRoomName(player.getCurrentRoom().getName().toUpperCase());
                         gameContext.getGameWindow()
                                 .writeLineToGameOutput(player.getCurrentRoom().getDescription());
                     }
