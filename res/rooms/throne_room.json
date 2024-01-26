@@ -38,5 +38,11 @@
         }
       ]
     }
+  ],
+  "exits": [
+    {
+      "direction": "east",
+      "destination": "Castle Library"
+    }
   ]
 }

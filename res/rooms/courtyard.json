@@ -1,0 +1,11 @@
+{
+  "name": "Courtyard",
+  "description": "The aroma of this open yard is a stale reminder of the past. The flowers living here are descendants of those you once knew well, and the grass has shifted hues, though its green color is no less vibrant—only different. To the south, a rusted gate opens up to the world outside the castle, and to the north, the cold wooden doors lead into the castle's great hall.",
+  "searchable_areas": [],
+  "exits": [
+    {
+      "direction": "north",
+      "destination": "Library"
+    }
+  ]
+}

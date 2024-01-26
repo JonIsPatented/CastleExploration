@@ -5,41 +5,18 @@ import com.jonispatented.castle_exploration.creatures.player.Player;
 import com.jonispatented.castle_exploration.items.Item;
 import com.jonispatented.castle_exploration.rooms.Room;
 import com.jonispatented.castle_exploration.rooms.SearchableArea;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class GameState {
 
     public static void loadGame(Engine gameContext) {
         gameContext.setCommandList(EXPLORATION_COMMANDS);
 
-        List<Room> rooms = new ArrayList<>();
+        List<Room> rooms = Room.Builder.buildRoomsFromJsonFiles();
 
-        rooms.add(loadRoomFromJsonFile("res/rooms/throne_room.json"));
-        rooms.add(loadRoomFromJsonFile("res/rooms/castle_library.json"));
-
-        rooms.get(0).addExit("east", rooms.get(1));
-        rooms.get(1).addExit("west", rooms.get(0));
-
-        gameContext.getPlayer().setCurrentRoom(rooms.get(1));
-    }
-
-    private static Room loadRoomFromJsonFile(String file) {
-        try {
-            return Room.Builder.buildFromJsonString(((JSONObject) new JSONParser()
-                    .parse(new FileReader(file))).toJSONString());
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-            return new Room.Builder().build();
-        }
+        gameContext.getPlayer().setCurrentRoom(rooms.stream()
+                .filter(room -> room.isValidName("Library")).findFirst().get());
     }
 
     public static void saveGame(Engine gameContext) {

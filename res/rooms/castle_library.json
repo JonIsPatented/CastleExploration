@@ -19,5 +19,15 @@
         }
       ]
     }
+  ],
+  "exits": [
+    {
+      "direction": "west",
+      "destination": "Throne Room"
+    },
+    {
+      "direction": "south",
+      "destination": "Courtyard"
+    }
   ]
 }

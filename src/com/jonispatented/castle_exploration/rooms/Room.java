@@ -6,6 +6,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +64,34 @@ public class Room {
 
     public static class Builder {
 
-        public static Room buildFromJsonString(String json) throws ParseException {
+        public static List<Room> buildRoomsFromJsonFiles() {
+            List<Room.Builder> roomBuilders = new ArrayList<>();
+            Map<String, Room> roomsByName = new HashMap<>();
+
+            for (File jsonFile : new File("res/rooms").listFiles()) {
+                Room.Builder builder = loadRoomBuilderFromJsonFile(jsonFile);
+                roomBuilders.add(builder);
+                roomsByName.put(builder.room.getName(), builder.room);
+            }
+
+            for (Room.Builder builder : roomBuilders)
+                for (DeferredExit deferredExit : builder.deferredExits)
+                    builder.addExit(deferredExit.direction, roomsByName.get(deferredExit.destination));
+
+            return roomBuilders.stream().map(Builder::build).toList();
+        }
+
+        private static Room.Builder loadRoomBuilderFromJsonFile(File file) {
+            try {
+                return Room.Builder.getBuilderFromJsonString(((JSONObject) new JSONParser()
+                        .parse(new FileReader(file))).toJSONString());
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
+                return new Room.Builder();
+            }
+        }
+
+        private static Room.Builder getBuilderFromJsonString(String json) throws ParseException {
             JSONObject roomJson = (JSONObject) new JSONParser().parse(json);
             Room.Builder builder = new Room.Builder();
 
@@ -75,13 +105,24 @@ public class Room {
                                 ((JSONObject) searchableArea).toJSONString())
                 );
 
-            return builder.build();
+            JSONArray deferredExitsList = (JSONArray) roomJson.get("exits");
+            for (Object deferredExit : deferredExitsList) {
+                JSONObject deferredExitJson = (JSONObject) deferredExit;
+                builder.deferredExits.add(new DeferredExit(
+                        (String) deferredExitJson.get("direction"),
+                        (String) deferredExitJson.get("destination"))
+                );
+            }
+
+            return builder;
         }
 
         private final Room room;
+        private final List<Room.Builder.DeferredExit> deferredExits;
 
         public Builder() {
             room = new Room();
+            deferredExits = new ArrayList<>();
         }
 
         public Builder addName(String name) {
@@ -114,6 +155,8 @@ public class Room {
                 room.validNames.add("DEFAULT");
             return room;
         }
+
+        private record DeferredExit(String direction, String destination) {}
 
     }
 
