@@ -19,6 +19,10 @@ public class GameState {
                 .filter(room -> room.isValidName("Library")).findFirst().get();
         gameContext.getPlayer().setCurrentRoom(startingRoom);
         gameContext.getGameWindow().setRoomName(startingRoom.getName().toUpperCase());
+
+        gameContext.getGameWindow().setStatsText("TEST: 1\nTEST: 2\nTEST: 3\nTEST: 4");
+        gameContext.getGameWindow().setInventoryText("Inventory:\n" +
+                gameContext.getPlayer().getInventory().getInventoryString());
     }
 
     public static void saveGame(Engine gameContext) {
@@ -100,6 +104,8 @@ public class GameState {
                             room.getSearchableAreas().forEach(area -> area.getItems().remove(item));
                             player.getInventory().addItem(item);
                             gameContext.getGameWindow().writeLineToGameOutput("Picked up the " + item.getName() + '.');
+                            gameContext.getGameWindow().setInventoryText("Inventory:\n" +
+                                    player.getInventory().getSimpleInventoryString());
                             return;
                         }
 
@@ -133,8 +139,9 @@ public class GameState {
             ),
             new GameCommand(
                     "(show) [inv,inventory]",
-                    (keyTerms, gameContext) -> gameContext.getPlayer().getInventory()
-                            .display("Inventory:", gameContext.getGameWindow())
+                    (keyTerms, gameContext) -> gameContext.getGameWindow().writeLineToGameOutput(
+                            "Inventory:\n" + gameContext.getPlayer().getInventory().getInventoryString()
+                    )
             ),
             new GameCommand(
                     "[quit,stop,exit] (the) [game]",

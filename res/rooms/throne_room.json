@@ -42,7 +42,7 @@
   "exits": [
     {
       "direction": "east",
-      "destination": "Castle Library"
+      "destination": "Library"
     }
   ]
 }

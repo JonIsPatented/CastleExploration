@@ -11,7 +11,9 @@ public class GameWindow extends JFrame {
 
     private JTextArea gameTextOutput;
     private JTextField gameTextInput;
-    private JTextField roomNameField;
+    private JTextArea roomNameField;
+    private JTextArea inventoryArea;
+    private JTextArea playerStatsArea;
 
     public GameWindow(Engine gameContext) {
         super("Castle Exploration");
@@ -31,7 +33,7 @@ public class GameWindow extends JFrame {
         JPanel roomNamePanel = new JPanel();
         roomNamePanel.setLayout(new BoxLayout(roomNamePanel, BoxLayout.X_AXIS));
         roomNamePanel.setBorder(border);
-        roomNameField = new JTextField();
+        roomNameField = new JTextArea();
         roomNameField.setEditable(false);
         roomNameField.setFont(gameFont.deriveFont(Font.BOLD, 24f));
         roomNamePanel.add(roomNameField);
@@ -46,9 +48,44 @@ public class GameWindow extends JFrame {
         gameTextOutput.setFont(gameFont.deriveFont(Font.ITALIC, 14f));
         gameTextOutput.setLineWrap(true);
         gameTextOutput.setWrapStyleWord(true);
-        JScrollPane scrollPane = new JScrollPane(gameTextOutput);
-        outputPanel.add(scrollPane, BorderLayout.CENTER);
+        JScrollPane gameTextOutputScrollPane = new JScrollPane(gameTextOutput);
+        outputPanel.add(gameTextOutputScrollPane, BorderLayout.CENTER);
         mainPanel.add(outputPanel, BorderLayout.CENTER);
+
+        // This panel is the user data region in the lower part of the screen
+        JPanel userRegionPanel = new JPanel();
+        userRegionPanel.setLayout(new BorderLayout());
+
+        // This panel shows the player data
+        JPanel playerDataPanel = new JPanel();
+        playerDataPanel.setLayout(new GridBagLayout());
+        playerDataPanel.setBorder(border);
+
+        // The inventory and statistics areas
+        inventoryArea = new JTextArea();
+        inventoryArea.setFont(gameFont.deriveFont(Font.ITALIC, 14f));
+        inventoryArea.setEditable(false);
+        inventoryArea.setWrapStyleWord(true);
+        inventoryArea.setLineWrap(true);
+        JScrollPane inventoryScrollPane = new JScrollPane(inventoryArea);
+
+        playerStatsArea = new JTextArea();
+        playerStatsArea.setFont(gameFont.deriveFont(Font.BOLD, 14f));
+        playerStatsArea.setEditable(false);
+        playerStatsArea.setWrapStyleWord(true);
+        playerStatsArea.setLineWrap(true);
+
+        GridBagConstraints playerDataGridBagConstraints = new GridBagConstraints();
+        playerDataGridBagConstraints.fill = GridBagConstraints.BOTH;
+
+        playerDataGridBagConstraints.weightx = 0.65;
+        playerDataGridBagConstraints.gridx = 0;
+        playerDataGridBagConstraints.gridy = 0;
+        playerDataPanel.add(inventoryScrollPane, playerDataGridBagConstraints);
+
+        playerDataGridBagConstraints.weightx = 0.35;
+        playerDataGridBagConstraints.gridx = 1;
+        playerDataPanel.add(playerStatsArea, playerDataGridBagConstraints);
 
         // This panel is the input field at the bottom of the screen
         JPanel inputPanel = new JPanel();
@@ -57,7 +94,11 @@ public class GameWindow extends JFrame {
         gameTextInput = new JTextField();
         gameTextInput.setFont(gameFont.deriveFont(14f));
         inputPanel.add(gameTextInput, BorderLayout.CENTER);
-        mainPanel.add(inputPanel, BorderLayout.SOUTH);
+
+        // Hook up the lower part of the screen
+        userRegionPanel.add(playerDataPanel, BorderLayout.CENTER);
+        userRegionPanel.add(inputPanel, BorderLayout.SOUTH);
+        mainPanel.add(userRegionPanel, BorderLayout.SOUTH);
 
         // Send the input to the parsing engine
         gameTextInput.addActionListener(e -> {
@@ -76,5 +117,13 @@ public class GameWindow extends JFrame {
 
     public void setRoomName(String roomName) {
         roomNameField.setText(roomName);
+    }
+
+    public void setInventoryText(String inventoryText) {
+        inventoryArea.setText(inventoryText);
+    }
+
+    public void setStatsText(String statsText) {
+        playerStatsArea.setText(statsText);
     }
 }
