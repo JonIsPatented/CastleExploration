@@ -1,5 +1,6 @@
 package com.jonispatented.castle_exploration.rooms;
 
+import com.jonispatented.castle_exploration.engine.GameWindow;
 import com.jonispatented.castle_exploration.items.Item;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -36,13 +37,13 @@ public class SearchableArea {
         return items;
     }
 
-    public void display() {
-        System.out.println(getName().toUpperCase() + ':');
-        if (items.isEmpty()) {
-            System.out.println(" - No items found");
-            return;
-        }
-        items.forEach(item -> System.out.println(" - " + item.getName()));
+    public void display(GameWindow window) {
+        StringBuilder displayStringBuilder = new StringBuilder(getName().toUpperCase() + ':');
+        if (items.isEmpty())
+            displayStringBuilder.append("\n - No items found");
+        else
+            items.forEach(item -> displayStringBuilder.append("\n - ").append(item.getName()));
+        window.writeLineToGameOutput(displayStringBuilder.toString());
     }
 
     public static class Builder {

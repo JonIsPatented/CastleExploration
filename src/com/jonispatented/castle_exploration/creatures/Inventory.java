@@ -30,13 +30,17 @@ public class Inventory {
         return items.remove(index);
     }
 
-    public void display(GameWindow window) {
+    public void display(String inventoryTitle, GameWindow window) {
+        StringBuilder inventoryStringBuilder = new StringBuilder(inventoryTitle);
         if (items.isEmpty()) {
-            window.writeLineToGameOutput("Inventory empty");
+            inventoryStringBuilder.append("\nInventory empty");
             return;
         }
-        items.forEach(item -> window.writeLineToGameOutput(" - " + item.getName() + ":\n" +
-                "   - " + item.getDescription()));
+        else
+            items.forEach(item -> inventoryStringBuilder
+                    .append("\n - ").append(item.getName()).append(":\n")
+                    .append("   - ").append(item.getDescription()));
+        window.writeLineToGameOutput(inventoryStringBuilder.toString());
     }
 
 }

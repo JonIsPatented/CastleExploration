@@ -122,7 +122,7 @@ public class GameState {
                         for (SearchableArea area : searchableAreas) {
                             if (!area.isValidName(areaName))
                                 continue;
-                            area.display();
+                            area.display(gameContext.getGameWindow());
                             currentRoom.getItems().addAll(area.getItems());
                             return;
                         }
@@ -133,10 +133,8 @@ public class GameState {
             ),
             new GameCommand(
                     "(show) [inv,inventory]",
-                    (keyTerms, gameContext) -> {
-                        gameContext.getGameWindow().writeLineToGameOutput("Inventory:");
-                        gameContext.getPlayer().getInventory().display(gameContext.getGameWindow());
-                    }
+                    (keyTerms, gameContext) -> gameContext.getPlayer().getInventory()
+                            .display("Inventory:", gameContext.getGameWindow())
             ),
             new GameCommand(
                     "[quit,stop,exit] (the) [game]",
