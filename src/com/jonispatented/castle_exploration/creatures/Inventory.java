@@ -1,7 +1,8 @@
 package com.jonispatented.castle_exploration.creatures;
 
+import com.jonispatented.castle_exploration.creatures.player.EquipSlot;
+import com.jonispatented.castle_exploration.creatures.player.Player;
 import com.jonispatented.castle_exploration.engine.Engine;
-import com.jonispatented.castle_exploration.engine.GameWindow;
 import com.jonispatented.castle_exploration.items.Item;
 
 import java.util.ArrayList;
@@ -10,14 +11,19 @@ import java.util.List;
 public class Inventory {
 
     private List<Item> items;
+    private final Player owner;
+    private final EquipSlot mainHandSlot, offHandSlot, armorSlot;
 
-    private Item mainHand, offHand, armor;
-
-    public Inventory() {
+    public Inventory(Player owner) {
         items = new ArrayList<>();
-        mainHand = null;
-        offHand = null;
-        armor = null;
+        this.owner = owner;
+        mainHandSlot = new EquipSlot();
+        offHandSlot = new EquipSlot();
+        armorSlot = new EquipSlot();
+    }
+
+    public Player getOwner() {
+        return owner;
     }
 
     public boolean addItem(Item item) {
@@ -36,76 +42,53 @@ public class Inventory {
     }
 
     public boolean removeItem(Item item) {
-        if (isEquipped(item))
-            unequip(item);
         return items.remove(item);
     }
 
     public Item removeItem(int index) {
-        Item itemToRemove = items.remove(index);
-        if (isEquipped(itemToRemove))
-            unequip(itemToRemove);
-        return itemToRemove;
+        return items.remove(index);
     }
 
-    public Item getMainHand() {
-        return mainHand;
+    public EquipSlot getMainHandSlot() {
+        return mainHandSlot;
     }
 
-    public Item getOffHand() {
-        return offHand;
+    public EquipSlot getOffHandSlot() {
+        return offHandSlot;
     }
 
-    public Item getArmor() {
-        return armor;
-    }
-
-    public void setMainHand(Item mainHand) {
-        this.mainHand = mainHand;
-    }
-
-    public void setOffHand(Item offHand) {
-        this.offHand = offHand;
-    }
-
-    public void setArmor(Item armor) {
-        this.armor = armor;
+    public EquipSlot getArmorSlot() {
+        return armorSlot;
     }
 
     public boolean isEquipped(Item item) {
-        if (mainHand == item)
+        if (mainHandSlot.isEquipped(item))
             return true;
-        if (offHand == item)
+        if (offHandSlot.isEquipped(item))
             return true;
-        if (armor == item)
+        if (armorSlot.isEquipped(item))
             return true;
         return false;
     }
 
     public boolean unequip(Item item) {
         boolean unequipSuccessful = false;
-        if (mainHand == item) {
-            mainHand = null;
+        if (mainHandSlot.unequip())
             unequipSuccessful = true;
-        }
-        if (offHand == item) {
-            offHand = null;
+        if (offHandSlot.unequip())
             unequipSuccessful = true;
-        }
-        if (armor == item) {
-            armor = null;
+        if (armorSlot.unequip())
             unequipSuccessful = true;
-        }
         return unequipSuccessful;
     }
 
-    public boolean equip(Engine gameContext, String itemName) {
+    public boolean equip(String itemName) {
         Item itemToEquip = getItem(itemName);
         if (itemToEquip == null)
             return false;
         if (isEquipped(itemToEquip))
             return false;
-        itemToEquip.equip(gameContext, this);
+        itemToEquip.equip(this);
         return true;
     }
 

@@ -8,13 +8,13 @@ import com.jonispatented.castle_exploration.items.Item;
 public class ArmorEquipStrategy implements EquipStrategy {
 
     @Override
-    public void equip(Engine gameContext, Inventory inventory, Item itemToEquip) {
-        GameWindow gameWindow = gameContext.getGameWindow();
+    public void equip(Inventory inventory, Item itemToEquip) {
+        GameWindow gameWindow = inventory.getOwner().getGameContext().getGameWindow();
         if (inventory.isEquipped(itemToEquip)) {
             gameWindow.writeLineToGameOutput(itemToEquip.getName() + " is already equipped.");
             return;
         }
-        inventory.setArmor(itemToEquip);
+        inventory.getArmorSlot().equip(itemToEquip);
         gameWindow.writeLineToGameOutput("Equipped " + itemToEquip.getName() + '.');
     }
 

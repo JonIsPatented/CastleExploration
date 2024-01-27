@@ -1,7 +1,9 @@
 package com.jonispatented.castle_exploration.items;
 
 import com.jonispatented.castle_exploration.creatures.Inventory;
+import com.jonispatented.castle_exploration.creatures.player.Player;
 import com.jonispatented.castle_exploration.engine.Engine;
+import com.jonispatented.castle_exploration.engine.GameWindow;
 import com.jonispatented.castle_exploration.items.equipping_strategies.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -39,8 +41,8 @@ public class Item {
         return description;
     }
 
-    public void equip(Engine gameContext, Inventory inventory) {
-        equipStrategy.equip(gameContext, inventory, this);
+    public void equip(Inventory inventory) {
+        equipStrategy.equip(inventory, this);
     }
 
     public static class Builder {

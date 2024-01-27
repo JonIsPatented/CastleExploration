@@ -121,7 +121,7 @@ public class GameState {
                     "[equip] (a,the) <item>",
                     (keyTerms, gameContext) -> {
                         Player player = gameContext.getPlayer();
-                        boolean equipSuccessful = player.getInventory().equip(gameContext, keyTerms.get(0));
+                        boolean equipSuccessful = player.getInventory().equip(keyTerms.get(0));
                         if (!equipSuccessful)
                             gameContext.getGameWindow()
                                     .writeLineToGameOutput("Could not find item \"" + keyTerms.get(0) + "\".");

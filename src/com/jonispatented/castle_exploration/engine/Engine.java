@@ -12,7 +12,7 @@ public class Engine {
     private GameWindow gameWindow;
 
     public Engine() {
-        player = new Player();
+        player = new Player(this);
         gameWindow = new GameWindow(this);
 
         gameWindow.writeLineToGameOutput("Welcome to Castle Exploration!");

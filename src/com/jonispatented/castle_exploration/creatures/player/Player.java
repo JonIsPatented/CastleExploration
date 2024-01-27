@@ -2,19 +2,26 @@ package com.jonispatented.castle_exploration.creatures.player;
 
 import com.jonispatented.castle_exploration.creatures.Inventory;
 import com.jonispatented.castle_exploration.creatures.Statistic;
+import com.jonispatented.castle_exploration.engine.Engine;
 import com.jonispatented.castle_exploration.rooms.Room;
 
 public class Player {
 
+    private Engine gameContext;
     private Room currentRoom;
     private Inventory inventory;
     private Statistic healthPoints, staminaPoints, manaPoints;
 
-    public Player() {
-        inventory = new Inventory();
+    public Player(Engine gameContext) {
+        this.gameContext = gameContext;
+        inventory = new Inventory(this);
         healthPoints = new Statistic(0, 24, 24);
         staminaPoints = new Statistic(0, 8, 8);
         manaPoints = new Statistic(0, 6, 6);
+    }
+
+    public Engine getGameContext() {
+        return gameContext;
     }
 
     public Room getCurrentRoom() {
@@ -54,26 +61,17 @@ public class Player {
         statsStringBuilder.append("\n");
 
         statsStringBuilder.append("MAIN HAND: ");
-        if (inventory.getMainHand() != null)
-            statsStringBuilder.append(inventory.getMainHand().getName().toUpperCase());
-        else
-            statsStringBuilder.append("NONE");
+        statsStringBuilder.append(inventory.getMainHandSlot().getItemName().toUpperCase());
 
         statsStringBuilder.append("\n");
 
         statsStringBuilder.append("OFF HAND: ");
-        if (inventory.getOffHand() != null)
-            statsStringBuilder.append(inventory.getOffHand().getName().toUpperCase());
-        else
-            statsStringBuilder.append("NONE");
+        statsStringBuilder.append(inventory.getOffHandSlot().getItemName().toUpperCase());
 
         statsStringBuilder.append("\n");
 
         statsStringBuilder.append("ARMOR: ");
-        if (inventory.getArmor() != null)
-            statsStringBuilder.append(inventory.getArmor().getName().toUpperCase());
-        else
-            statsStringBuilder.append("NONE");
+        statsStringBuilder.append(inventory.getArmorSlot().getItemName().toUpperCase());
 
         return statsStringBuilder.toString();
     }
