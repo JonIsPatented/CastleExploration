@@ -1,6 +1,7 @@
 package com.jonispatented.castle_exploration.engine;
 
 import com.jonispatented.castle_exploration.command_parsing.GameCommand;
+import com.jonispatented.castle_exploration.creatures.Inventory;
 import com.jonispatented.castle_exploration.creatures.player.Player;
 import com.jonispatented.castle_exploration.items.Item;
 import com.jonispatented.castle_exploration.rooms.Room;
@@ -115,6 +116,31 @@ public class GameState {
                     "[pick_up,grab,take] (a,the) <item> [from,by,off,off_of] (a,the) <location>",
                     (keyTerms, gameContext) -> gameContext.getGameWindow()
                             .writeLineToGameOutput("GRAB 2 CHOSEN:\n" + keyTerms.get(0) + '\n' + keyTerms.get(1))
+            ),
+            new GameCommand(
+                    "[equip] (a,the) <item>",
+                    (keyTerms, gameContext) -> {
+                        Player player = gameContext.getPlayer();
+                        boolean equipSuccessful = player.getInventory().equip(gameContext, keyTerms.get(0));
+                        if (!equipSuccessful)
+                            gameContext.getGameWindow()
+                                    .writeLineToGameOutput("Could not find item \"" + keyTerms.get(0) + "\".");
+                        gameContext.getGameWindow().updatePlayerDisplay(gameContext.getPlayer());
+                    }
+            ),
+            new GameCommand(
+                    "[unequip] (a,the) <item>",
+                    (keyTerms, gameContext) -> {
+                        Inventory playerInventory = gameContext.getPlayer().getInventory();
+                        boolean unequipSuccessful = playerInventory.unequip(playerInventory.getItem(keyTerms.get(0)));
+                        if (!unequipSuccessful)
+                            gameContext.getGameWindow()
+                                    .writeLineToGameOutput("Could not find item \"" + keyTerms.get(0) + "\".");
+                        else
+                            gameContext.getGameWindow().writeLineToGameOutput("Unequipped " +
+                                    playerInventory.getItem(keyTerms.get(0)).getName());
+                        gameContext.getGameWindow().updatePlayerDisplay(gameContext.getPlayer());
+                    }
             ),
             new GameCommand(
                     "[search,explore,investigate] (a,the) <location>",

@@ -1,5 +1,8 @@
 package com.jonispatented.castle_exploration.items;
 
+import com.jonispatented.castle_exploration.creatures.Inventory;
+import com.jonispatented.castle_exploration.engine.Engine;
+import com.jonispatented.castle_exploration.items.equipping_strategies.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -14,6 +17,7 @@ public class Item {
 
     private final List<String> validNames;
     private String description;
+    private EquipStrategy equipStrategy;
 
     private Item() {
         validNames = new ArrayList<>();
@@ -33,6 +37,10 @@ public class Item {
 
     public String getDescription() {
         return description;
+    }
+
+    public void equip(Engine gameContext, Inventory inventory) {
+        equipStrategy.equip(gameContext, inventory, this);
     }
 
     public static class Builder {
@@ -64,6 +72,14 @@ public class Item {
                     builder.addName((String) name);
             }
 
+            if (itemJson.containsKey("equip_style")) {
+                switch ((String) itemJson.get("equip_style")) {
+                    case "main_hand" -> builder.equipStrategy(new MainHandEquipStrategy());
+                    case "off_hand" -> builder.equipStrategy(new OffHandEquipStrategy());
+                    case "armor" -> builder.equipStrategy(new ArmorEquipStrategy());
+                }
+            }
+
             return builder;
         }
 
@@ -87,9 +103,16 @@ public class Item {
             return this;
         }
 
+        public Builder equipStrategy(EquipStrategy equipStrategy) {
+            item.equipStrategy = equipStrategy;
+            return this;
+        }
+
         public Item build() {
             if (item.validNames.isEmpty())
                 item.validNames.add("DEFAULT");
+            if (item.equipStrategy == null)
+                item.equipStrategy = new NoEquipStrategy();
             return item;
         }
 

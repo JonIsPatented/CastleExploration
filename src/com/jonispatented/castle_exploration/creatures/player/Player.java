@@ -53,18 +53,27 @@ public class Player {
 
         statsStringBuilder.append("\n");
 
-        statsStringBuilder.append("MAIN HAND: ")
-                .append("NOT IMPLEMENTED");
+        statsStringBuilder.append("MAIN HAND: ");
+        if (inventory.getMainHand() != null)
+            statsStringBuilder.append(inventory.getMainHand().getName().toUpperCase());
+        else
+            statsStringBuilder.append("NONE");
 
         statsStringBuilder.append("\n");
 
-        statsStringBuilder.append("OFF HAND: ")
-                .append("NOT IMPLEMENTED");
+        statsStringBuilder.append("OFF HAND: ");
+        if (inventory.getOffHand() != null)
+            statsStringBuilder.append(inventory.getOffHand().getName().toUpperCase());
+        else
+            statsStringBuilder.append("NONE");
 
         statsStringBuilder.append("\n");
 
-        statsStringBuilder.append("ARMOR: ")
-                .append("NOT IMPLEMENTED");
+        statsStringBuilder.append("ARMOR: ");
+        if (inventory.getArmor() != null)
+            statsStringBuilder.append(inventory.getArmor().getName().toUpperCase());
+        else
+            statsStringBuilder.append("NONE");
 
         return statsStringBuilder.toString();
     }
