@@ -73,11 +73,11 @@ public class Inventory {
 
     public boolean unequip(Item item) {
         boolean unequipSuccessful = false;
-        if (mainHandSlot.unequip())
+        if (mainHandSlot.unequip(item))
             unequipSuccessful = true;
-        if (offHandSlot.unequip())
+        if (offHandSlot.unequip(item))
             unequipSuccessful = true;
-        if (armorSlot.unequip())
+        if (armorSlot.unequip(item))
             unequipSuccessful = true;
         return unequipSuccessful;
     }

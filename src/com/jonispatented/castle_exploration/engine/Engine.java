@@ -15,7 +15,6 @@ public class Engine {
         player = new Player(this);
         gameWindow = new GameWindow(this);
 
-        gameWindow.writeLineToGameOutput("Welcome to Castle Exploration!");
         GameState.loadGame(this);
     }
 

@@ -1,6 +1,6 @@
 {
   "name": "Throne Room",
-  "description": "This regal grand hall is supported by granite pillars. At one end of the room sits a massive stone throne, braced with iron pegs and cold steel adornments. The room is almost unbearably cold, and your breath is visible in the air. In one corner stands a suspicious statue, and to the east is a door way leading into the library.",
+  "description": "This regal grand hall is supported by granite pillars. At one end of the room sits a massive stone throne, braced with iron pegs and cold steel adornments. The room is almost unbearably cold, and your breath is visible in the air. In one corner stands a suspicious statue, to the east is a door way leading into the library, and to the south is an heavy iron door that leads to the dungeons.",
   "searchable_areas": [
     {
       "names": [
@@ -34,6 +34,7 @@
             "Shield",
             "Targe"
           ],
+          "equip_style": "off_hand",
           "description": "This accursed targe bears a dark weight that pulls on your arm as you wield it. It will surely defend you, but at what cost?"
         }
       ]
@@ -43,6 +44,10 @@
     {
       "direction": "east",
       "destination": "Library"
+    },
+    {
+      "direction": "south",
+      "destination": "Dungeon"
     }
   ]
 }

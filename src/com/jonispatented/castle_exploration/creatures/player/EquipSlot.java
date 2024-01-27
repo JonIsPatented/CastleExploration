@@ -31,6 +31,13 @@ public class EquipSlot {
         return true;
     }
 
+    public boolean unequip(Item item) {
+        if (this.item != item)
+            return false;
+        this.item = null;
+        return true;
+    }
+
     public boolean isEquipped(Item item) {
         return this.item == item;
     }

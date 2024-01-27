@@ -19,8 +19,10 @@ public class GameState {
         Room startingRoom = rooms.stream()
                 .filter(room -> room.isValidName("Library")).findFirst().get();
         gameContext.getPlayer().setCurrentRoom(startingRoom);
-        gameContext.getGameWindow().setRoomName(startingRoom.getName().toUpperCase());
 
+        gameContext.getGameWindow().setRoomName(startingRoom.getName().toUpperCase());
+        gameContext.getGameWindow()
+                .writeLineToGameOutput(gameContext.getPlayer().getCurrentRoom().getDescription());
         gameContext.getGameWindow().updatePlayerDisplay(gameContext.getPlayer());
     }
 

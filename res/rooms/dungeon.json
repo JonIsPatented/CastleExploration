@@ -1,0 +1,32 @@
+{
+  "name": "Dungeon",
+  "description": "The dungeon is a cold, damp chamber with bars covering the narrow windows. The sound of dripping water echoes off the stone walls, creating an eerie atmosphere. Iron shackles hang from the walls, remnants of its dark history. To the north, the heavy iron door to the throne room casts an eerie shadow.",
+  "searchable_areas": [
+    {
+      "names": [
+        "Shackles"
+      ],
+      "items": [
+        {
+          "names": [
+            "Key"
+          ],
+          "description": "This rusty key seems to have been forgotten in the depths of the dungeon. It may unlock secrets long buried."
+        },
+        {
+          "names": [
+            "Lantern",
+            "Lamp"
+          ],
+          "description": "This lantern emits a feeble light, barely enough to penetrate the darkness. It could be useful if properly fueled."
+        }
+      ]
+    }
+  ],
+  "exits": [
+    {
+      "direction": "north",
+      "destination": "Throne Room"
+    }
+  ]
+}
