@@ -10,10 +10,12 @@ public class GameCommand {
 
     private final List<Token> formatTokens;
     private final CommandRoutine commandRoutine;
+    private final String formatString;
 
     public GameCommand(String formatString, CommandRoutine commandRoutine) {
         this.formatTokens = new ArrayList<>();
         this.commandRoutine = commandRoutine;
+        this.formatString = formatString;
 
         String[] tokenStrings = formatString.split(" ");
         for (String tokenString : tokenStrings) {
@@ -52,6 +54,10 @@ public class GameCommand {
         commandRoutine.execute(capturedWords, gameContext);
 
         return true;
+    }
+
+    public String getFormatString() {
+        return formatString;
     }
 
     private interface Token {

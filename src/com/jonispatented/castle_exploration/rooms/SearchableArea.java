@@ -42,7 +42,8 @@ public class SearchableArea {
         if (items.isEmpty())
             displayStringBuilder.append("\n - No items found");
         else
-            items.forEach(item -> displayStringBuilder.append("\n - ").append(item.getName()));
+            items.forEach(item -> displayStringBuilder.append("\n - ").append(item.getName())
+                    .append("\n   - ").append(item.getDescription()));
         window.writeLineToGameOutput(displayStringBuilder.toString());
     }
 

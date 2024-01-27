@@ -1,6 +1,7 @@
 package com.jonispatented.castle_exploration.engine;
 
 import com.jonispatented.castle_exploration.command_parsing.InputParser;
+import com.jonispatented.castle_exploration.creatures.player.Player;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -9,6 +10,7 @@ import java.awt.*;
 
 public class GameWindow extends JFrame {
 
+    private JScrollPane gameTextOutputScrollPane;
     private JTextArea gameTextOutput;
     private JTextField gameTextInput;
     private JTextArea roomNameField;
@@ -17,9 +19,9 @@ public class GameWindow extends JFrame {
 
     public GameWindow(Engine gameContext) {
         super("Castle Exploration");
-        setPreferredSize(new Dimension(480, 700));
+        setPreferredSize(new Dimension(780, 580));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
+        setResizable(true);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
@@ -48,7 +50,7 @@ public class GameWindow extends JFrame {
         gameTextOutput.setFont(gameFont.deriveFont(Font.ITALIC, 14f));
         gameTextOutput.setLineWrap(true);
         gameTextOutput.setWrapStyleWord(true);
-        JScrollPane gameTextOutputScrollPane = new JScrollPane(gameTextOutput);
+        gameTextOutputScrollPane = new JScrollPane(gameTextOutput);
         outputPanel.add(gameTextOutputScrollPane, BorderLayout.CENTER);
         mainPanel.add(outputPanel, BorderLayout.CENTER);
 
@@ -113,6 +115,10 @@ public class GameWindow extends JFrame {
 
     public void writeLineToGameOutput(String message) {
         gameTextOutput.append(message + "\n\n");
+        SwingUtilities.invokeLater(() -> {
+            JScrollBar scrollBar = gameTextOutputScrollPane.getVerticalScrollBar();
+            scrollBar.setValue(scrollBar.getMaximum());
+        });
     }
 
     public void setRoomName(String roomName) {
@@ -125,5 +131,10 @@ public class GameWindow extends JFrame {
 
     public void setStatsText(String statsText) {
         playerStatsArea.setText(statsText);
+    }
+
+    public void updatePlayerDisplay(Player player) {
+        setInventoryText("Inventory:\n" + player.getInventory().getSimpleInventoryString());
+        setStatsText(player.getStatsString());
     }
 }

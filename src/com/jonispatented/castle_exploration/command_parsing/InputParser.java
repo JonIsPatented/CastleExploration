@@ -11,7 +11,7 @@ public class InputParser {
                 return;
         }
         gameContext.getGameWindow()
-                .writeLineToGameOutput("Unrecognized command. Type \"Help\" for a list of commands.");
+                .writeLineToGameOutput("Unrecognized command. Type \"Manual\" for a list of commands.");
     }
 
 }

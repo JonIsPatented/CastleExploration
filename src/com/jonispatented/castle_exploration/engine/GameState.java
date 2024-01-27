@@ -20,9 +20,7 @@ public class GameState {
         gameContext.getPlayer().setCurrentRoom(startingRoom);
         gameContext.getGameWindow().setRoomName(startingRoom.getName().toUpperCase());
 
-        gameContext.getGameWindow().setStatsText("TEST: 1\nTEST: 2\nTEST: 3\nTEST: 4");
-        gameContext.getGameWindow().setInventoryText("Inventory:\n" +
-                gameContext.getPlayer().getInventory().getInventoryString());
+        gameContext.getGameWindow().updatePlayerDisplay(gameContext.getPlayer());
     }
 
     public static void saveGame(Engine gameContext) {
@@ -119,7 +117,7 @@ public class GameState {
                             .writeLineToGameOutput("GRAB 2 CHOSEN:\n" + keyTerms.get(0) + '\n' + keyTerms.get(1))
             ),
             new GameCommand(
-                    "[search,explore] (a,the) <location>",
+                    "[search,explore,investigate] (a,the) <location>",
                     (keyTerms, gameContext) -> {
                         Room currentRoom = gameContext.getPlayer().getCurrentRoom();
                         List<SearchableArea> searchableAreas = currentRoom.getSearchableAreas();
@@ -148,6 +146,17 @@ public class GameState {
                     (keyTerms, gameContext) -> {
                         gameContext.getGameWindow().writeLineToGameOutput("Goodbye!");
                         gameContext.stop();
+                    }
+            ),
+            new GameCommand(
+                    "[manual]",
+                    (keyTerms, gameContext) -> {
+                        StringBuilder manualStringBuilder = new StringBuilder("Manual:");
+                        gameContext.getCommandList().forEach(
+                                gameCommand -> manualStringBuilder.append('\n')
+                                        .append(gameCommand.getFormatString())
+                        );
+                        gameContext.getGameWindow().writeLineToGameOutput(manualStringBuilder.toString());
                     }
             )
     );
